@@ -1,4 +1,6 @@
 {
+  "name": "nuxt3-app",
+  "repository": "https://github.com/wang01h2/nuxt3-app.git",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
