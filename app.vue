@@ -4,7 +4,7 @@ useHead({
   link: [
     {
       rel: 'icon',
-      href: process.env.NODE_ENV === 'production' ? '/nuxt.png' : '/public/nuxt.png',
+      href: '/nuxt.png',
     },
   ],
 })

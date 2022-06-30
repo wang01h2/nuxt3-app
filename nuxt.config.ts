@@ -2,9 +2,10 @@ import { defineNuxtConfig } from 'nuxt'
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  ssr: false,
   target: 'static',
   router: {
-    base: process.env.NODE_ENV === 'production' ? '/nuxt3-app/' : '/', // 使用 './' 主要是为了适配以相对路径打开的静态站点
+    base: '/nuxt3-app/',
   },
   typescript: {
     shim: false,
