@@ -1,110 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
 
-interface DataType {
-  label?: string
-  isDone?: boolean
-  keyValue?: string
-  key?: string
-}
-const STORAGE_KEY = 'todo-data'
-const inputValue = ref('')
-
-const filters = {
-  all: (todos: DataType[]) => todos,
-  uncompleted: (todos: DataType[]) => todos.filter(todo => !todo.isDone),
-  completed: (todos: DataType[]) => todos.filter(todo => todo.isDone),
-}
-// state
-const todos = ref()
-const visibility = ref('all')
-// derived state
-// const all = computed(() => filters[visibility.value](todos.value))
-const completedList = computed(() => filters.completed(todos.value))
-const uncompletedList = computed(() => filters.uncompleted(todos.value))
-/*
-* 开始处理逻辑
-* 控制状态
-* :inputModel: 输入绑定数据，string类型
-* :isDone: 是否点击了完成 boolean
-* 事件：
-* @unselected-click: 完成事项事件
-* @edit-call-back: 编辑代办事项事件
-* */
-
-onMounted(() => {
-  const arr: DataType[] = [
-    {
-      label: '美好的一天开始啦~ 💃',
-      isDone: false,
-      keyValue: '003',
-      key: '003',
-    },
-    {
-      label: '吃个橙子 🍊️',
-      isDone: false,
-      keyValue: '002',
-      key: '002',
-    },
-    {
-      label: '喝杯咖啡 ☕️',
-      isDone: true,
-      keyValue: '001',
-      key: '001',
-    },
-  ]
-  // 如果数据不存在，初始化
-  if (todos.value.length === 0)
-    todos.value.unshift(arr)
-})
-
-function enterCallBack(data: DataType) {
-  // 接收 index组件传递来的对象
-  if (data)
-    todos.value.unshift(data)
-}
-
-/*
-* 目前的思路是，如果 = true,把这个item放到已关闭的数组中，自然而然在下面
-* name: localstorage中的key
-* */
-function unselectedEvent(data: DataType) {
-  todos.value.forEach((item: DataType) => {
-    if (item.key === data.keyValue)
-      item.isDone = !item.isDone
-  })
-}
-/*
-* 只有未完成的才能够编辑
-* */
-function editEvent(data: DataType) {
-  for (const item of todos.value) {
-    if (item.key === data.keyValue)
-      item.label = data.label
-  }
-  console.log('触发啦编辑事件')
-}
-
-/*
-* 只有已完成的才能删除，所以只删除已完成的数据
-* */
-function deleteEvent(obj: DataType) {
-  todos.value.forEach((item: DataType, index: number) => {
-    if (item.key === obj.keyValue)
-      todos.value.splice(index, 1)
-  })
-}
-
-/*
-* name: localstorage中的key
-* */
-// function setData(data: DataType[], name: string) {
-//   window.localStorage.setItem(name, JSON.stringify(data))
-// }
-//
-// function SAVE() {
-//   setData(todos.value, STORAGE_KEY)
-// }
 </script>
 
 <template>
@@ -118,15 +13,15 @@ function deleteEvent(obj: DataType) {
         ToDo
       </h2>
     </div>
-    <list-index
+    <TodoIndex
       class="w-5/6 h-16 bg-white xl:h-20 xl:w-4/12 2xl:h-20 2xl:w-4/12"
     />
     <div ref="scroll" class="flex justify-center items-center flex-col w-5/6 bg-white xl:w-4/12 2xl:w-4/12">
       <ul class="w-full">
-        <list-item />
+        <TodoItem />
       </ul>
       <ul class="w-full">
-        <list-item />
+        <TodoItem />
       </ul>
     </div>
     <div class="h-16 mt-12">
@@ -134,7 +29,7 @@ function deleteEvent(obj: DataType) {
         双击编辑待办事项
       </p>
       <p class="text-xs text-gray-300 text-opacity-40 text-center select-none dark:text-gray-400 dark:text-opacity-10">
-        Power by: wang01h2
+        Power by: NuxtJS
       </p>
     </div>
   </div>
